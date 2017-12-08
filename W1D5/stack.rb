@@ -15,6 +15,6 @@ class Stack
   end
 
   def show
-    stack.dup
+    stack
   end
 end
