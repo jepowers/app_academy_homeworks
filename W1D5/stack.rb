@@ -11,7 +11,7 @@ class Stack
   end
 
   def remove
-    stack.pop(el)
+    stack.pop
   end
 
   def show
