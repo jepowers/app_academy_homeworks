@@ -20,58 +20,55 @@ class Simon
   def play
     initialize
 
-    until game_over
+    until @game_over
       take_turn
-
-      if game_over
-        game_over_message
-        reset_game
-      else
-        round_success_message
-      end
+      system("clear")
     end
 
+    game_over_message
     reset_game
   end
 
   def take_turn
     show_sequence
     require_sequence
+
+    unless @game_over
+      round_success_message
+      @sequence_length += 1
+    end
   end
 
   def show_sequence
     add_random_color
-    sequence_length += 1
 
     "Watch the following sequence carefully".timed_message(2)
 
     seq.each do |color|
-      "".timed_message(1)
+      "".timed_message(0.5)
       color.timed_message(1)
     end
-
   end
 
   def require_sequence
-    response = []
     puts "Please enter the sequence in order.\n\n"
 
-    @seq.each_with_index do |val, idx|
-      response << gets.chomp.strip
+    @seq.each do |val|
+      response = gets.chomp.strip
 
-      if response.last != @seq[i]
-        game_over = true
+      if response != val
+        @game_over = true
         break
+      end
     end
   end
 
   def add_random_color
     @seq += [COLORS.shuffle.first]
-    @sequence_length = @seq.length
   end
 
   def round_success_message
-    puts "You got it! Here comes the next round!"
+    "You got it! Here comes the next round!".timed_message(3)
   end
 
   def game_over_message
@@ -85,11 +82,6 @@ class Simon
     @game_over = false
     @seq = []
   end
-  #
-  # def valid_guess?(color)
-  #   return false if color.nil?
-  #   COLORS.include?(color)
-  # end
 
   def correct_guess?(response_arr)
     response_arr.each_index do |idx|
@@ -97,7 +89,6 @@ class Simon
     end
     true
   end
-
 end
 
 class String
